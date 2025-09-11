@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONTRIGO - Booking Page</title>
+    <link rel="stylesheet" href="/css/booking.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ONTRIGO - Booking</h1>
+            <nav>
+                <ul>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="support.html">Support</a></li>
+                    <li><a href="booking.html">Bookings</a></li>
+                    <li><a href="activities.html">Activities</a></li>
+                    <li><a href="hotel.html">Hotel</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+  <div class="booking-container">
+    <h2>Complete Your Booking</h2>
+    <form id="bookingForm">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="destination">Destination</label>
+      <select id="destination" name="destination" required>
+        <option value="">Select Destination</option>
+        <option>New York</option>
+        <option>Paris</option>
+        <option>Tokyo</option>
+        <option>Rome</option>
+        <option>Sydney</option>
+        <option>Cape Town</option>
+        <option>Rio de Janeiro</option>
+        <option>Dubai</option>
+        <option>Istanbul</option>
+      </select>
+
+      <label for="checkin">Check-in Date</label>
+      <input type="date" id="checkin" name="checkin" required>
+
+      <label for="checkout">Check-out Date</label>
+      <input type="date" id="checkout" name="checkout" required>
+
+      <label for="guests">Number of Guests</label>
+      <input type="number" id="guests" name="guests" min="1" required>
+
+      <button type="submit">Confirm Booking</button>
+    </form>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 ONTRIGO Travel Tours. All rights reserved.</p>
+  </footer> 
+</body>
+<script src="/js/booking.js" defer></script>
+</html>
