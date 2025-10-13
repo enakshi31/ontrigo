@@ -7,20 +7,70 @@
     <link rel="stylesheet" href="/css/contact.css">
 </head>
 <body>
-    <header>
-        <h1>Contact Us</h1>
-        <nav>
-            <ul>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="support.html">Support</a></li>
-                <li><a href="booking.html">Bookings</a></li>
-                <li><a href="activities.html">Activities</a></li>
-                <li><a href="hotel.html">Hotel</a></li>
-                <li><a href="login.html">Login</a></li>
-            </ul>
-        </nav>
-    </header>
+        <header>
+            <div class="container">
+                <h1>Contact Us</h1>
+                <nav>
+                    <ul>
+                        <li><a href="/main.html">Main</a></li>
+                        <li><a href="#" id="logoutBtn">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Session check
+                if (!localStorage.getItem('isLoggedIn')) {
+                    window.location.href = '/html/login.html';
+                }
+                // Logout button
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        localStorage.removeItem('isLoggedIn');
+                        window.location.href = '/html/login.html';
+                    });
+                }
+
+                // Contact form submission
+                const contactForm = document.querySelector('.contact-form form');
+                if (contactForm) {
+                    contactForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const name = document.getElementById('name').value.trim();
+                        const email = document.getElementById('email').value.trim();
+                        const message = document.getElementById('message').value.trim();
+                        // Get customerid from localStorage if available
+                        const customerid = localStorage.getItem('customerid');
+                        fetch('http://localhost:3001/api/contact', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                full_name: name || undefined,
+                                email: email || undefined,
+                                message,
+                                customerid: customerid || undefined
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.message) {
+                                alert('Your message has been sent!');
+                                contactForm.reset();
+                            } else {
+                                alert(data.error || 'Something went wrong.');
+                            }
+                        })
+                        .catch(() => {
+                            alert('Failed to send message.');
+                        });
+                    });
+                }
+            });
+        </script>
 
     <section id="contact">
         <div class="container">
@@ -39,14 +89,15 @@
                 <div class="contact-form">
                     <form action="#" method="post">
                         <label for="name">Your Name</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="name" placeholder="Leave blank to use your account name">
 
                         <label for="email">Your Email</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email" placeholder="Leave blank to use your account email">
 
                         <label for="message">Message</label>
                         <textarea id="message" name="message" rows="5" required></textarea>
 
+                        <small style="display:block;margin-bottom:10px;color:#888;">If you leave name or email blank, we'll use your account info.</small>
                         <button type="submit">Send Message</button>
                     </form>
                 </div>

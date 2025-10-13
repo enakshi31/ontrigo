@@ -7,22 +7,77 @@
     <link rel="stylesheet" href="/css/hotel.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Hotel Bookings</h1>
-            <nav>
-                <ul>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="support.html">Support</a></li>
-                    <li><a href="booking.html">Bookings</a></li>
-                    <li><a href="activities.html">Activities</a></li>
-                    <li><a href="hotel.html">Hotel</a></li>
-                    <li><a href="login.html">Login</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+        <header>
+            <div class="container">
+                <h1>Hotel Bookings</h1>
+                <nav>
+                    <ul>
+                        <li><a href="/main.html">Main</a></li>
+                        <li><a href="#" id="logoutBtn">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (!localStorage.getItem('isLoggedIn')) {
+                    window.location.href = '/html/login.html';
+                }
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        localStorage.removeItem('isLoggedIn');
+                        window.location.href = '/html/login.html';
+                    });
+                }
+
+                // Hotel booking form submission
+                const bookingForm = document.querySelector('.booking-form form');
+                if (bookingForm) {
+                    bookingForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const destination = document.getElementById('destination').value;
+                        const checkin = document.getElementById('checkin').value;
+                        const checkout = document.getElementById('checkout').value;
+                        const guests = document.getElementById('guests').value;
+                        const room_type = document.getElementById('room').value;
+                        // For demo, persons = guests, paymentid = 1
+                        const persons = guests;
+                        const paymentid = 1;
+                        const customerid = localStorage.getItem('customerid');
+                        fetch('http://localhost:3001/api/bookedpackage', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                customerid,
+                                paymentid,
+                                persons,
+                                guests,
+                                room_type,
+                                checkin_date: checkin,
+                                checkout_date: checkout,
+                                destination
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.message) {
+                                alert('Hotel booked successfully! Duration: ' + data.duration + ' days');
+                                bookingForm.reset();
+                                window.location.href = '/html/payment.html';
+                            } else {
+                                alert(data.error || 'Booking failed.');
+                            }
+                        })
+                        .catch(() => {
+                            alert('Failed to book hotel.');
+                        });
+                    });
+                }
+            });
+        </script>
 
     <section id="booking">
         <div class="booking-container">

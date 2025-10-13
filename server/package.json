@@ -1,0 +1,11 @@
+{
+  "name": "ontrigo-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.9.7",
+    "cors": "^2.8.5"
+  }
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - ONTRIGO</title>
+    <link rel="stylesheet" href="/css/payment.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Payment</h1>
+            <nav>
+                <ul>
+                    <li><a href="/main.html">Main</a></li>
+                    <li><a href="#" id="logoutBtn">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section id="payment">
+        <div class="container">
+            <h2>Complete Your Payment</h2>
+            <div id="payment-details" class="payment-details"></div>
+            <form id="paymentForm">
+                <label for="method">Payment Method</label>
+                <select id="method" name="method" required>
+                    <option value="">Select payment method</option>
+                    <option value="credit">Credit Card</option>
+                    <option value="debit">Debit Card</option>
+                    <option value="upi">UPI</option>
+                    <option value="bank">Bank Transfer</option>
+                </select>
+                <button type="submit">Pay Now</button>
+            </form>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 ONTRIGO Travel Tours. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!localStorage.getItem('isLoggedIn')) {
+                window.location.href = '/html/login.html';
+            }
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isLoggedIn');
+                    window.location.href = '/html/login.html';
+                });
+            }
+            // Fetch latest booking for this user
+            const customerid = localStorage.getItem('customerid');
+            fetch(`http://localhost:3001/api/bookedpackage`)
+                .then(res => res.json())
+                .then(rows => {
+                    // Get the latest booking for this user
+                    const booking = rows.filter(row => row.customerid == customerid).slice(-1)[0];
+                    if (!booking) {
+                        document.getElementById('payment-details').innerHTML = '<p>No booking found. Please book a hotel first.</p>';
+                        document.getElementById('paymentForm').style.display = 'none';
+                        return;
+                    }
+                    // Basic amounts for each destination
+                    const baseAmounts = {
+                        'newyork': 2,
+                        'paris': 3,
+                        'tokyo': 4,
+                        'rome': 2.5,
+                        'sydney': 3.5,
+                        'apetown': 2.2,
+                        'Rio de Janeiro': 2.8,
+                        'dubai': 5,
+                        'istanbul': 2.6
+                    };
+                    const base = baseAmounts[booking.destination] || 2;
+                    // Calculate total
+                    const total = base * booking.duration * booking.guests;
+                    document.getElementById('payment-details').innerHTML = `
+                        <p><strong>Destination:</strong> ${booking.destination}</p>
+                        <p><strong>Check-in:</strong> ${booking.checkin_date}</p>
+                        <p><strong>Check-out:</strong> ${booking.checkout_date}</p>
+                        <p><strong>Duration:</strong> ${booking.duration} days</p>
+                        <p><strong>Guests:</strong> ${booking.guests}</p>
+                        <p><strong>Room Type:</strong> ${booking.room_type}</p>
+                        <p><strong>Amount to Pay:</strong> $${total.toFixed(2)}</p>
+                    `;
+                    // Save amount for payment
+                    localStorage.setItem('payment_amount', total);
+                });
+            // Handle payment form submission
+            const paymentForm = document.getElementById('paymentForm');
+            paymentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const method = document.getElementById('method').value;
+                const amount = localStorage.getItem('payment_amount');
+                // For demo, just show success
+                alert('Payment successful! Amount paid: $' + amount);
+                paymentForm.reset();
+            });
+        });
+    </script>
+</body>
+</html>

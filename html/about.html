@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
     <link rel="stylesheet" href="/css/about.css">
+    <script src="/js/auth.js"></script>
 </head>
 <body>
     <header>
@@ -12,13 +13,8 @@
             <h1><span>Travel tour agency</span></h1>
             <nav>
                 <ul>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="support.html">Support</a></li>
-                    <li><a href="booking.html">Bookings</a></li>
-                    <li><a href="activities.html">Activities</a></li>
-                    <li><a href="hotel.html">Hotel</a></li>
-                    <li><a href="login.html">Login</a></li>
+                    <li><a href="/main.html">Main</a></li>
+                    <li><a id="logoutBtn" style="background:none; color:#fff; font-weight:600; font-size:16px; border:none; cursor:pointer; padding:0 10px;">Logout</a></li>
                 </ul>
             </nav>
         </div>
@@ -44,58 +40,71 @@
         </div>
     </section>
 
-    <section id="mission-vision">
-        <div class="container mission-grid">
-            <div class="mv-box">
-                <img src="https://images.unsplash.com/photo-1526779259212-939e64788e3c" alt="Our Mission">
-                <h3>Our Mission</h3>
-                <p>
-                    To provide affordable, reliable, and memorable travel experiences 
-                    that connect people with different cultures and destinations.
-                </p>
-            </div>
-            <div class="mv-box">
-                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Our Vision">
-                <h3>Our Vision</h3>
-                <p>
-                    To be the world's most trusted travel partner, inspiring people 
-                    to explore and cherish the beauty of our planet.
-                </p>
-            </div>
-        </div>
-    </section>
 
-    <section id="why-choose-us">
-        <div class="container">
-            <h2>Why Choose Us?</h2>
-            <div class="choose-flex">
-                <div class="choose-item">
-                    <img src="https://images.unsplash.com/photo-1521295121783-8a321d551ad2" alt="Affordable Travel">
-                    <p>Affordable and transparent pricing</p>
+        <section id="mission-vision">
+            <div class="container mission-grid">
+                <div class="mv-box">
+                    <img src="https://images.unsplash.com/photo-1526779259212-939e64788e3c" alt="Our Mission">
+                    <h3>Our Mission</h3>
+                    <p>
+                        To provide affordable, reliable, and memorable travel experiences 
+                        that connect people with different cultures and destinations.
+                    </p>
                 </div>
-                <div class="choose-item">
-                    <img src="https://images.unsplash.com/photo-1523413651479-597eb2da0ad6" alt="Tour Guides">
-                    <p>Experienced and friendly tour guides</p>
-                </div>
-                <div class="choose-item">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Custom Packages">
-                    <p>Customized travel packages</p>
-                </div>
-                <div class="choose-item">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330" alt="Customer Support">
-                    <p>24/7 customer support</p>
-                </div>
-                <div class="choose-item">
-                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Happy Travelers">
-                    <p>1000+ happy travelers worldwide</p>
+                <div class="mv-box">
+                    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Our Vision">
+                    <h3>Our Vision</h3>
+                    <p>
+                        To be the world's most trusted travel partner, inspiring people 
+                        to explore and cherish the beauty of our planet.
+                    </p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer>
-        <p>&copy; 2024 Travel Tours. All rights reserved.</p>
-    </footer>
+        <section id="why-choose-us">
+            <div class="container">
+                <h2>Why Choose Us?</h2>
+                <div class="choose-flex">
+                    <div class="choose-item">
+                        <img src="https://images.unsplash.com/photo-1521295121783-8a321d551ad2" alt="Affordable Travel">
+                        <p>Affordable and transparent pricing</p>
+                    </div>
+                    <div class="choose-item">
+                        <img src="https://images.unsplash.com/photo-1523413651479-597eb2da0ad6" alt="Tour Guides">
+                        <p>Experienced and friendly tour guides</p>
+                    </div>
+                    <div class="choose-item">
+                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Custom Packages">
+                        <p>Customized travel packages</p>
+                    </div>
+                    <div class="choose-item">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330" alt="Customer Support">
+                        <p>24/7 customer support</p>
+                    </div>
+                    <div class="choose-item">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Happy Travelers">
+                        <p>1000+ happy travelers worldwide</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+                <p>&copy; 2024 Travel Tours. All rights reserved.</p>
+        </footer>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        localStorage.removeItem('isLoggedIn');
+                        window.location.href = '/html/login.html';
+                    });
+                }
+            });
+        </script>
     
 </body>
 </html>

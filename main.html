@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Travel Tour - ONTRIGO</title>
   <link rel="stylesheet" href="main.css">
+  <script src="js/auth.js"></script>
   <!-- <button><a href="html/booking.html" target="_blank">Book now</a></button> -->
 </head>
 <body>
@@ -14,11 +15,10 @@
         <ul>
           <li><a href="html/about.html">About</a></li>
           <li><a href="html/contact.html">Contact</a></li>
-          <li><a href="html/support.html">Support</a></li>
-          <li><a href="html/booking.html">Bookings</a></li>
+          <!-- <li><a href="html/booking.html">Bookings</a></li> -->
           <li><a href="html/activities.html">Activities</a></li>
           <li><a href="html/hotel.html">Hotel</a></li>
-          <li><a href="html/login.html">Login</a></li>
+          <li><a id="logoutBtn" style="background:none; color:#fff; font-weight:600; font-size:16px; border:none; cursor:pointer; padding:0 10px;">Logout</a></li>
         </ul>
       </nav>
     </div>
@@ -44,6 +44,18 @@
   </footer>
 
   <script>
+    // Logout button functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = '/html/login.html';
+        });
+      }
+    });
+
     // Package Data
     const packages = [
       {
