@@ -2,10 +2,14 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+// Serve static files from the parent directory
+app.use(express.static(path.join(__dirname, '..')));
 // Login endpoint
 app.post('/api/login', (req, res) => {
 	const { email, password } = req.body;
@@ -36,6 +40,21 @@ app.post('/api/register', (req, res) => {
 			return res.status(500).json({ error: err.message });
 		}
 		res.json({ message: 'User registered successfully!' });
+	});
+});
+
+// Create a payment record
+app.post('/api/payment', (req, res) => {
+	const { customerid, payment_method, paymentdate, amount, bookingid } = req.body;
+	if (!customerid || !payment_method || !paymentdate || !amount) {
+		return res.status(400).json({ error: 'customerid, payment_method, paymentdate, and amount are required.' });
+	}
+	const sql = 'INSERT INTO payment (customerid, payment_method, paymentdate, amount, bookingid) VALUES (?, ?, ?, ?, ?)';
+	db.run(sql, [customerid, payment_method, paymentdate, amount, bookingid || 0], function (err) {
+		if (err) {
+			return res.status(500).json({ error: err.message });
+		}
+		res.json({ message: 'Payment created successfully!', paymentid: this.lastID });
 	});
 });
 
